@@ -27,7 +27,6 @@ export default function BudgetMonitoring() {
   const totalAnggaran = monitoring.reduce((s, r) => s + r.anggaran, 0);
   const totalRealisasi = monitoring.reduce((s, r) => s + r.realisasi, 0);
 
-  // Fix: hindari NaN kalau anggaran = 0
   const totalPct =
     totalAnggaran > 0
       ? ((totalRealisasi / totalAnggaran) * 100).toFixed(1)
@@ -38,6 +37,8 @@ export default function BudgetMonitoring() {
     (m) => m.status === 'Peringatan'
   ).length;
 
+  const maxMonthly = Math.max(...monthlyData.map(m => m.anggaran));
+
   return (
     <div
       style={{
@@ -47,75 +48,25 @@ export default function BudgetMonitoring() {
         padding: '28px 32px',
       }}
     >
-      <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap"
-        rel="stylesheet"
-      />
-
       {/* Header */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'flex-start',
           marginBottom: 28,
         }}
       >
         <div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              marginBottom: 4,
-            }}
-          >
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                background: 'linear-gradient(135deg,#0ea5e9,#0284c7)',
-                borderRadius: 10,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <span style={{ fontSize: 18 }}>📡</span>
-            </div>
-            <h1
-              style={{
-                fontSize: 22,
-                fontWeight: 700,
-                color: '#0f172a',
-                margin: 0,
-              }}
-            >
-              Monitoring Anggaran
-            </h1>
-          </div>
-          <p style={{ color: '#64748b', fontSize: 13, margin: 0 }}>
-            Modul Budgeting · Real-time · Tahun Anggaran 2025
+          <h1 style={{ fontSize: 22, fontWeight: 700 }}>
+            Monitoring Anggaran
+          </h1>
+          <p style={{ color: '#64748b', fontSize: 13 }}>
+            Modul Budgeting · Tahun Anggaran 2025
           </p>
         </div>
-
-        <button
-          style={{
-            background: '#f1f5f9',
-            color: '#475569',
-            border: 'none',
-            borderRadius: 10,
-            padding: '10px 16px',
-            fontWeight: 600,
-            fontSize: 13,
-            cursor: 'pointer',
-          }}
-        >
-          📥 Laporan
-        </button>
       </div>
 
-      {/* KPIs */}
+      {/* KPI */}
       <div
         style={{
           display: 'grid',
@@ -124,101 +75,97 @@ export default function BudgetMonitoring() {
           marginBottom: 24,
         }}
       >
-        {[
-          {
-            label: 'Total Anggaran 2025',
-            value: fmt(totalAnggaran),
-            icon: '💰',
-            color: '#0ea5e9',
-          },
-          {
-            label: 'Total Realisasi YTD',
-            value: fmt(totalRealisasi),
-            sub: totalPct + '% dari total',
-            icon: '📤',
-            color: '#f97316',
-          },
-          {
-            label: 'Sisa Anggaran',
-            value: fmt(sisaAnggaran),
-            sub: (100 - Number(totalPct)).toFixed(1) + '% tersedia',
-            icon: '💡',
-            color: '#16a34a',
-          },
-          {
-            label: 'Status Dept Peringatan',
-            value: peringatanCount + ' dept',
-            sub: 'perlu perhatian',
-            icon: '⚠️',
-            color: '#dc2626',
-          },
-        ].map((c, i) => (
-          <div
-            key={i}
-            style={{
-              background: '#fff',
-              borderRadius: 14,
-              padding: '18px 20px',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
-              border: '1px solid #f1f5f9',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    margin: '0 0 6px',
-                    fontSize: 11,
-                    color: '#94a3b8',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {c.label}
-                </p>
-                <p
-                  style={{
-                    margin: '0 0 2px',
-                    fontSize: 16,
-                    fontWeight: 700,
-                    color: '#0f172a',
-                    fontFamily: "'DM Mono', monospace",
-                  }}
-                >
-                  {c.value}
-                </p>
-                {c.sub && (
-                  <p style={{ margin: 0, fontSize: 11, color: '#94a3b8' }}>
-                    {c.sub}
-                  </p>
-                )}
-              </div>
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  background: c.color + '18',
-                  borderRadius: 10,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 20,
-                }}
-              >
-                {c.icon}
-              </div>
-            </div>
-          </div>
-        ))}
+        <Card label="Total Anggaran 2025" value={fmt(totalAnggaran)} />
+        <Card
+          label="Total Realisasi YTD"
+          value={fmt(totalRealisasi)}
+          sub={totalPct + '% dari total'}
+        />
+        <Card
+          label="Sisa Anggaran"
+          value={fmt(sisaAnggaran)}
+          sub={(100 - Number(totalPct)).toFixed(1) + '% tersedia'}
+        />
+        <Card
+          label="Dept Status Peringatan"
+          value={peringatanCount + ' dept'}
+          sub="Perlu perhatian"
+        />
       </div>
 
-      {/* Sisanya (table & monthly) biarkan sama seperti punyamu — tidak error */}
+      {/* Grafik Monthly (memakai monthlyData -> FIX ESLINT) */}
+      <div style={{ background: '#fff', borderRadius: 14, padding: 20, marginBottom: 24 }}>
+        <h3 style={{ marginBottom: 12 }}>Realisasi vs Anggaran Bulanan</h3>
+        <div style={{ display: 'flex', alignItems: 'end', gap: 16, height: 120 }}>
+          {monthlyData.map((m) => (
+            <div key={m.bulan} style={{ textAlign: 'center', flex: 1 }}>
+              <div
+                style={{
+                  background: '#0ea5e9',
+                  height: (m.realisasi / maxMonthly) * 100,
+                  borderRadius: 6,
+                }}
+                title={`Realisasi ${fmt(m.realisasi)}`}
+              />
+              <div style={{ fontSize: 12, marginTop: 6 }}>{m.bulan}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Table Monitoring (memakai statusConfig -> FIX ESLINT) */}
+      <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #f1f5f9' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead style={{ background: '#f1f5f9' }}>
+            <tr>
+              <th>Departemen</th>
+              <th>Anggaran</th>
+              <th>Realisasi</th>
+              <th>Persen</th>
+              <th>Proyeksi</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {monitoring.map((m, i) => {
+              const sc = statusConfig[m.status];
+              return (
+                <tr key={i} style={{ borderTop: '1px solid #f1f5f9' }}>
+                  <td>{m.icon} {m.dept}</td>
+                  <td>{fmt(m.anggaran)}</td>
+                  <td>{fmt(m.realisasi)}</td>
+                  <td>{m.persen}%</td>
+                  <td>{fmt(m.proyeksi)}</td>
+                  <td>
+                    <span
+                      style={{
+                        background: sc.bg,
+                        color: sc.text,
+                        padding: '4px 10px',
+                        borderRadius: 20,
+                        fontSize: 12,
+                        fontWeight: 600,
+                      }}
+                    >
+                      ● {m.status}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function Card({ label, value, sub }) {
+  return (
+    <div style={{ background: '#fff', borderRadius: 14, padding: 18, border: '1px solid #f1f5f9' }}>
+      <p style={{ fontSize: 12, color: '#94a3b8', margin: 0 }}>{label}</p>
+      <p style={{ fontSize: 18, fontWeight: 700, margin: '6px 0 0' }}>{value}</p>
+      {sub && <p style={{ fontSize: 12, color: '#64748b', margin: 0 }}>{sub}</p>}
     </div>
   );
 }

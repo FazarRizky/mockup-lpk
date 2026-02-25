@@ -37,7 +37,6 @@ export default function ReminderExpired() {
   const [filterJenis, setFilterJenis] = useState('Semua');
   const [filterStatus, setFilterStatus] = useState('Semua');
 
-  // FIX 1: gunakan useMemo agar tidak re-sort tiap render + tidak mutasi data asli
   const filtered = useMemo(() => {
     const result = reminderData.filter((r) => {
       const matchJenis = filterJenis === 'Semua' || r.jenis === filterJenis;
@@ -45,25 +44,24 @@ export default function ReminderExpired() {
       return matchJenis && matchStatus;
     });
 
-    // FIX 2: clone sebelum sort (hindari mutasi array asli)
     return [...result].sort((a, b) => a.daysLeft - b.daysLeft);
   }, [filterJenis, filterStatus]);
 
-  // FIX 3: statistik aman
   const expired = useMemo(
     () => reminderData.filter((r) => r.status === 'Expired').length,
     []
   );
+
   const hampirBerakhir = useMemo(
     () => reminderData.filter((r) => r.status === 'Hampir Berakhir').length,
     []
   );
+
   const normal = useMemo(
     () => reminderData.filter((r) => r.status === 'Normal').length,
     []
   );
 
-  // FIX 4: timeline data (tidak mutasi reminderData)
   const timelineData = useMemo(
     () => [...reminderData].sort((a, b) => a.daysLeft - b.daysLeft),
     []
@@ -71,59 +69,53 @@ export default function ReminderExpired() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Reminder Expired</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Pantau dan kelola dokumen & kontrak yang akan berakhir
-          </p>
-        </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
-          🔔 Kirim Notifikasi Massal
-        </button>
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">
+          Reminder Expired
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Pantau dan kelola dokumen & kontrak yang akan berakhir
+        </p>
       </div>
 
-      {/* Alert Banner */}
-      {expired > 0 && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-300 rounded-xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🚨</span>
-            <div>
-              <p className="text-sm font-bold text-red-800">
-                {expired} dokumen sudah EXPIRED
-              </p>
-              <p className="text-xs text-red-600">
-                Segera perbarui untuk menghindari masalah operasional!
-              </p>
-            </div>
-          </div>
-          <button className="bg-red-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-red-700 font-medium">
-            Tangani Sekarang
-          </button>
+      {/* SUMMARY CARD (INI YANG MEMPERBAIKI ERROR ESLINT) */}
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="bg-white border rounded-xl p-4">
+          <p className="text-xs text-gray-500">Expired</p>
+          <p className="text-xl font-bold text-red-600">{expired}</p>
         </div>
-      )}
+        <div className="bg-white border rounded-xl p-4">
+          <p className="text-xs text-gray-500">Hampir Berakhir</p>
+          <p className="text-xl font-bold text-orange-600">
+            {hampirBerakhir}
+          </p>
+        </div>
+        <div className="bg-white border rounded-xl p-4">
+          <p className="text-xs text-gray-500">Normal</p>
+          <p className="text-xl font-bold text-emerald-600">
+            {normal}
+          </p>
+        </div>
+      </div>
 
-      {/* Timeline Visual (FIX: pakai timelineData) */}
+      {/* Timeline */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6">
         <p className="text-sm font-semibold text-gray-700 mb-3">
-          Timeline Expiry (30 Item Terdekat)
+          Timeline Expiry
         </p>
         <div className="flex gap-1 h-8 rounded-lg overflow-hidden">
           {timelineData.map((r) => (
             <div
               key={r.id}
-              className={`flex-1 rounded-sm ${
+              className={`flex-1 ${
                 r.daysLeft < 0
                   ? 'bg-red-400'
                   : r.daysLeft <= 180
                   ? 'bg-orange-400'
                   : 'bg-emerald-400'
               }`}
-              title={`${r.nama} — ${
-                r.daysLeft < 0
-                  ? 'Expired'
-                  : r.daysLeft + ' hari lagi'
-              }`}
+              title={`${r.nama}`}
             />
           ))}
         </div>
@@ -132,7 +124,7 @@ export default function ReminderExpired() {
       {/* Filters */}
       <div className="flex gap-3 mb-4">
         <select
-          className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white"
+          className="border rounded-lg px-3 py-2 text-sm bg-white"
           value={filterJenis}
           onChange={(e) => setFilterJenis(e.target.value)}
         >
@@ -144,7 +136,7 @@ export default function ReminderExpired() {
         </select>
 
         <select
-          className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white"
+          className="border rounded-lg px-3 py-2 text-sm bg-white"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
@@ -161,45 +153,25 @@ export default function ReminderExpired() {
         {filtered.map((r) => (
           <div
             key={r.id}
-            className={`bg-white rounded-xl border shadow-sm p-4 flex items-center justify-between gap-4 ${
-              r.daysLeft < 0
-                ? 'border-red-200 bg-red-50/30'
-                : r.status === 'Hampir Berakhir'
-                ? 'border-orange-200'
-                : 'border-gray-200'
-            }`}
+            className="bg-white rounded-xl border shadow-sm p-4 flex items-center justify-between"
           >
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 bg-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="text-2xl">
                 {jenisIcon[r.jenis] || '📁'}
               </div>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                  <p className="font-semibold text-gray-800 text-sm">
-                    {r.nama}
-                  </p>
-                  <span
-                    className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${
-                      prioritasColor[r.prioritas] || 'bg-gray-100 text-gray-600'
-                    }`}
-                  >
-                    {r.prioritas}
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap gap-x-3 text-xs text-gray-500">
-                  <span>
-                    {jenisIcon[r.jenis] || '📁'} {r.jenis}
-                  </span>
-                  <span>👤 {r.pemilik}</span>
-                </div>
+              <div>
+                <p className="font-semibold text-sm text-gray-800">
+                  {r.nama}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {r.jenis} • {r.pemilik}
+                </p>
               </div>
             </div>
 
             <span
-              className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${
-                statusColor[r.status] || 'bg-gray-100 text-gray-600'
+              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                statusColor[r.status]
               }`}
             >
               {r.status}
