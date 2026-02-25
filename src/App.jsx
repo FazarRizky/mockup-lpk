@@ -7,79 +7,119 @@ import MainLayout from './components/layout/MainLayout';
 // Pages
 import Dashboard from './pages/Dashboard';
 
-// Pendaftaran
-import CalonPeserta from './pages/pendaftaran/CalonPeserta';
-import VerifikasiDokumen from './pages/pendaftaran/VerifikasiDokumen';
-import TesAwal from './pages/pendaftaran/TesAwal';
-import KeputusanSeleksi from './pages/pendaftaran/KeputusanSeleksi';
+// System & Security
+import UserManagement from './pages/system/UserManagement';
+import RoleManagement from './pages/system/RoleManagement';
+import PermissionManagement from './pages/system/PermissionManagement';
+import ApprovalMatrix from './pages/system/ApprovalMatrix';
+import AccessControl from './pages/system/AccessControl';
+import ActivityLog from './pages/system/ActivityLog';
 
-// Akademik
-import DataPeserta from './pages/akademik/DataPeserta';
-import ManajemenKelas from './pages/akademik/ManajemenKelas';
-import JadwalPembelajaran from './pages/akademik/JadwalPembelajaran';
-import Absensi from './pages/akademik/Absensi';
-import NilaiEvaluasi from './pages/akademik/NilaiEvaluasi';
+// Master Data
+import Cabang from './pages/master/Cabang';
+import CostCenter from './pages/master/CostCenter';
+import ChartOfAccounts from './pages/master/ChartOfAccounts';
+import FiscalPeriod from './pages/master/FiscalPeriod';
+import Program from './pages/master/Program';
+import BatchAngkatan from './pages/master/BatchAngkatan';
+import Instruktur from './pages/master/Instruktur';
+import SkillSertifikasi from './pages/master/SkillSertifikasi';
+import PartnerJepang from './pages/master/PartnerJepang';
+import PerusahaanJepang from './pages/master/PerusahaanJepang';
+import LokasiJepang from './pages/master/LokasiJepang';
+import JenisDokumen from './pages/master/JenisDokumen';
+import PaketBiaya from './pages/master/PaketBiaya';
 
-// Ujian
-import UjianInternal from './pages/ujian/UjianInternal';
-import SimulasiBahasa from './pages/ujian/SimulasiBahasa';
-import HasilUjian from './pages/ujian/HasilUjian';
-import Sertifikat from './pages/ujian/Sertifikat';
+// Operasional Siswa - Manajemen Siswa
+import ProfilSiswa from './pages/operasional/siswa/ProfilSiswa';
+import StatusJourney from './pages/operasional/siswa/StatusJourney';
+import DokumenSiswa from './pages/operasional/siswa/DokumenSiswa';
+import CatatanIssue from './pages/operasional/siswa/CatatanIssue';
 
-// Penyaluran
-import PesertaSiapSalur from './pages/penyaluran/PesertaSiapSalur';
-import JobOrder from './pages/penyaluran/JobOrder';
-import Matching from './pages/penyaluran/Matching';
-import Interview from './pages/penyaluran/Interview';
-import HasilSeleksi from './pages/penyaluran/HasilSeleksi';
+// Operasional Siswa - Training Progress
+import Absensi from './pages/operasional/training/Absensi';
+import Penilaian from './pages/operasional/training/Penilaian';
+import Evaluasi from './pages/operasional/training/Evaluasi';
 
-// Keberangkatan
-import DokumenKeberangkatan from './pages/keberangkatan/DokumenKeberangkatan';
-import MonitoringTimeline from './pages/keberangkatan/MonitoringTimeline';
-import FinalBriefing from './pages/keberangkatan/FinalBriefing';
-import StatusKeberangkatan from './pages/keberangkatan/StatusKeberangkatan';
+// Operasional Siswa - Keberangkatan
+import JadwalKeberangkatan from './pages/operasional/keberangkatan/JadwalKeberangkatan';
+import ChecklistPraBerangkat from './pages/operasional/keberangkatan/ChecklistPraBerangkat';
+import DetailPenerbangan from './pages/operasional/keberangkatan/DetailPenerbangan';
+import DokumenFinal from './pages/operasional/keberangkatan/DokumenFinal';
+import StatusKeberangkatan from './pages/operasional/keberangkatan/StatusKeberangkatan';
+import KonfirmasiBerangkat from './pages/operasional/keberangkatan/KonfirmasiBerangkat';
 
-// Monitoring
-import DataPenempatan from './pages/monitoring/DataPenempatan';
-import EvaluasiKinerja from './pages/monitoring/EvaluasiKinerja';
-import LaporanMasalah from './pages/monitoring/LaporanMasalah';
-import PerpanjanganKontrak from './pages/monitoring/PerpanjanganKontrak';
+// Recruitment & Matching Jepang
+import PoolKandidat from './pages/recruitment/PoolKandidat';
+import JadwalInterview from './pages/recruitment/JadwalInterview';
+import HasilInterview from './pages/recruitment/HasilInterview';
+import ApprovalKandidat from './pages/recruitment/ApprovalKandidat';
+import PlacementJepang from './pages/recruitment/PlacementJepang';
+import StatusPlacement from './pages/recruitment/StatusPlacement';
 
-// Keuangan
-import BiayaPendidikan from './pages/keuangan/BiayaPendidikan';
-import Pembayaran from './pages/keuangan/Pembayaran';
-import Invoice from './pages/keuangan/Invoice';
-import LaporanKeuangan from './pages/keuangan/LaporanKeuangan';
+// Dokumen & Legal
+import DokumenLegal from './pages/dokumen/DokumenLegal';
+import ApprovalDokumen from './pages/dokumen/ApprovalDokumen';
+import KontrakSiswa from './pages/dokumen/KontrakSiswa';
+import KontrakPerusahaan from './pages/dokumen/KontrakPerusahaan';
+import VersiHistori from './pages/dokumen/VersiHistori';
+import ReminderExpired from './pages/dokumen/ReminderExpired';
 
-// Master
-import ProgramPelatihan from './pages/master/ProgramPelatihan';
-import Kurikulum from './pages/master/Kurikulum';
-import BidangKerja from './pages/master/BidangKerja';
-import MitraJepang from './pages/master/MitraJepang';
-import TahunAngkatan from './pages/master/TahunAngkatan';
+// Monitoring Jepang
+import StatusKerjaSiswa from './pages/monitoring/StatusKerjaSiswa';
+import CheckinBerkala from './pages/monitoring/CheckinBerkala';
+import EvaluasiPerusahaan from './pages/monitoring/EvaluasiPerusahaan';
+import IncidentReport from './pages/monitoring/IncidentReport';
+import DataKepulangan from './pages/monitoring/DataKepulangan';
 
-// User Management
-import Admin from './pages/user/Admin';
-import Instruktur from './pages/user/Instruktur';
-import RolePermission from './pages/user/RolePermission';
-import AuditLog from './pages/user/AuditLog';
+// Budgeting & Control
+import BudgetPeriod from './pages/budgeting/BudgetPeriod';
+import BudgetPlanning from './pages/budgeting/BudgetPlanning';
+import BudgetAllocation from './pages/budgeting/BudgetAllocation';
+import BudgetApproval from './pages/budgeting/BudgetApproval';
+import BudgetRevision from './pages/budgeting/BudgetRevision';
+import BudgetMonitoring from './pages/budgeting/BudgetMonitoring';
+import BudgetLock from './pages/budgeting/BudgetLock';
 
-// Laporan
-import LaporanPeserta from './pages/laporan/LaporanPeserta';
-import LaporanAkademik from './pages/laporan/LaporanAkademik';
-import LaporanPenyaluran from './pages/laporan/LaporanPenyaluran';
-import ExportData from './pages/laporan/ExportData';
+// Finance (Cashflow)
+import BillingInvoice from './pages/finance/BillingInvoice';
+import VirtualAccount from './pages/finance/VirtualAccount';
+import PaymentMonitoring from './pages/finance/PaymentMonitoring';
+import RequestDisbursement from './pages/finance/RequestDisbursement';
+import ApprovalDisbursement from './pages/finance/ApprovalDisbursement';
+import CashIn from './pages/finance/CashIn';
+import CashOut from './pages/finance/CashOut';
 
-// Pengaturan
-import ProfilLPK from './pages/pengaturan/ProfilLPK';
-import TemplateDokumen from './pages/pengaturan/TemplateDokumen';
-import Notifikasi from './pages/pengaturan/Notifikasi';
-import Backup from './pages/pengaturan/Backup';
+// Accounting
+import AutoJournal from './pages/accounting/AutoJournal';
+import ManualJournal from './pages/accounting/ManualJournal';
+import JournalApproval from './pages/accounting/JournalApproval';
+import GeneralLedger from './pages/accounting/GeneralLedger';
+import TrialBalance from './pages/accounting/TrialBalance';
+import ProfitLoss from './pages/accounting/ProfitLoss';
+import BalanceSheet from './pages/accounting/BalanceSheet';
+
+// Reporting & Analytics
+import ReportOperasional from './pages/reporting/ReportOperasional';
+import ReportAkademik from './pages/reporting/ReportAkademik';
+import ReportPlacement from './pages/reporting/ReportPlacement';
+import ReportBudget from './pages/reporting/ReportBudget';
+import ReportCashflow from './pages/reporting/ReportCashflow';
+import ReportKeuangan from './pages/reporting/ReportKeuangan';
+import ExportData from './pages/reporting/ExportData';
+
+// Integration & Settings
+import PaymentGateway from './pages/settings/PaymentGateway';
+import EmailGateway from './pages/settings/EmailGateway';
+import TelegramGateway from './pages/settings/TelegramGateway';
+import TemplateDokumen from './pages/settings/TemplateDokumen';
+import SLAReminder from './pages/settings/SLAReminder';
+import BackupRestore from './pages/settings/BackupRestore';
+import CompliancePolicy from './pages/settings/CompliancePolicy';
 
 function App() {
   return (
     <BrowserRouter>
-      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -91,97 +131,127 @@ function App() {
             boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
             padding: '16px',
           },
-          success: {
-            iconTheme: {
-              primary: '#10b981',
-              secondary: '#fff',
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: '#fff',
-            },
-          },
+          success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
+          error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
         }}
       />
 
       <Routes>
-        {/* Main Layout - Semua route menggunakan layout yang sama */}
         <Route element={<MainLayout />}>
           {/* Dashboard */}
           <Route path="/" element={<Dashboard />} />
 
-          {/* Pendaftaran & Seleksi */}
-          <Route path="/pendaftaran/calon-peserta" element={<CalonPeserta />} />
-          <Route path="/pendaftaran/verifikasi-dokumen" element={<VerifikasiDokumen />} />
-          <Route path="/pendaftaran/tes-awal" element={<TesAwal />} />
-          <Route path="/pendaftaran/keputusan-seleksi" element={<KeputusanSeleksi />} />
-
-          {/* Akademik */}
-          <Route path="/akademik/data-peserta" element={<DataPeserta />} />
-          <Route path="/akademik/manajemen-kelas" element={<ManajemenKelas />} />
-          <Route path="/akademik/jadwal" element={<JadwalPembelajaran />} />
-          <Route path="/akademik/absensi" element={<Absensi />} />
-          <Route path="/akademik/nilai" element={<NilaiEvaluasi />} />
-
-          {/* Ujian & Sertifikasi */}
-          <Route path="/ujian/ujian-internal" element={<UjianInternal />} />
-          <Route path="/ujian/simulasi-bahasa" element={<SimulasiBahasa />} />
-          <Route path="/ujian/hasil-ujian" element={<HasilUjian />} />
-          <Route path="/ujian/sertifikat" element={<Sertifikat />} />
-
-          {/* Penyaluran */}
-          <Route path="/penyaluran/peserta-siap" element={<PesertaSiapSalur />} />
-          <Route path="/penyaluran/job-order" element={<JobOrder />} />
-          <Route path="/penyaluran/matching" element={<Matching />} />
-          <Route path="/penyaluran/interview" element={<Interview />} />
-          <Route path="/penyaluran/hasil-seleksi" element={<HasilSeleksi />} />
-
-          {/* Keberangkatan */}
-          <Route path="/keberangkatan/dokumen" element={<DokumenKeberangkatan />} />
-          <Route path="/keberangkatan/timeline" element={<MonitoringTimeline />} />
-          <Route path="/keberangkatan/briefing" element={<FinalBriefing />} />
-          <Route path="/keberangkatan/status" element={<StatusKeberangkatan />} />
-
-          {/* Monitoring */}
-          <Route path="/monitoring/data-penempatan" element={<DataPenempatan />} />
-          <Route path="/monitoring/evaluasi-kinerja" element={<EvaluasiKinerja />} />
-          <Route path="/monitoring/laporan-masalah" element={<LaporanMasalah />} />
-          <Route path="/monitoring/perpanjangan" element={<PerpanjanganKontrak />} />
-
-          {/* Keuangan */}
-          <Route path="/keuangan/biaya" element={<BiayaPendidikan />} />
-          <Route path="/keuangan/pembayaran" element={<Pembayaran />} />
-          <Route path="/keuangan/invoice" element={<Invoice />} />
-          <Route path="/keuangan/laporan" element={<LaporanKeuangan />} />
+          {/* System & Security */}
+          <Route path="/system/user" element={<UserManagement />} />
+          <Route path="/system/role" element={<RoleManagement />} />
+          <Route path="/system/permission" element={<PermissionManagement />} />
+          <Route path="/system/approval-matrix" element={<ApprovalMatrix />} />
+          <Route path="/system/access-control" element={<AccessControl />} />
+          <Route path="/system/activity-log" element={<ActivityLog />} />
 
           {/* Master Data */}
-          <Route path="/master/program" element={<ProgramPelatihan />} />
-          <Route path="/master/kurikulum" element={<Kurikulum />} />
-          <Route path="/master/bidang-kerja" element={<BidangKerja />} />
-          <Route path="/master/mitra" element={<MitraJepang />} />
-          <Route path="/master/angkatan" element={<TahunAngkatan />} />
+          <Route path="/master/cabang" element={<Cabang />} />
+          <Route path="/master/cost-center" element={<CostCenter />} />
+          <Route path="/master/coa" element={<ChartOfAccounts />} />
+          <Route path="/master/fiscal-period" element={<FiscalPeriod />} />
+          <Route path="/master/program" element={<Program />} />
+          <Route path="/master/batch" element={<BatchAngkatan />} />
+          <Route path="/master/instruktur" element={<Instruktur />} />
+          <Route path="/master/skill" element={<SkillSertifikasi />} />
+          <Route path="/master/partner" element={<PartnerJepang />} />
+          <Route path="/master/perusahaan" element={<PerusahaanJepang />} />
+          <Route path="/master/lokasi" element={<LokasiJepang />} />
+          <Route path="/master/jenis-dokumen" element={<JenisDokumen />} />
+          <Route path="/master/paket-biaya" element={<PaketBiaya />} />
 
-          {/* User Management */}
-          <Route path="/user/admin" element={<Admin />} />
-          <Route path="/user/instruktur" element={<Instruktur />} />
-          <Route path="/user/role" element={<RolePermission />} />
-          <Route path="/user/audit" element={<AuditLog />} />
+          {/* Operasional Siswa - Manajemen Siswa */}
+          <Route path="/operasional/siswa/profil" element={<ProfilSiswa />} />
+          <Route path="/operasional/siswa/journey" element={<StatusJourney />} />
+          <Route path="/operasional/siswa/dokumen" element={<DokumenSiswa />} />
+          <Route path="/operasional/siswa/catatan" element={<CatatanIssue />} />
 
-          {/* Laporan */}
-          <Route path="/laporan/peserta" element={<LaporanPeserta />} />
-          <Route path="/laporan/akademik" element={<LaporanAkademik />} />
-          <Route path="/laporan/penyaluran" element={<LaporanPenyaluran />} />
-          <Route path="/laporan/export" element={<ExportData />} />
+          {/* Operasional Siswa - Training Progress */}
+          <Route path="/operasional/training/absensi" element={<Absensi />} />
+          <Route path="/operasional/training/penilaian" element={<Penilaian />} />
+          <Route path="/operasional/training/evaluasi" element={<Evaluasi />} />
 
-          {/* Pengaturan */}
-          <Route path="/pengaturan/profil" element={<ProfilLPK />} />
-          <Route path="/pengaturan/template" element={<TemplateDokumen />} />
-          <Route path="/pengaturan/notifikasi" element={<Notifikasi />} />
-          <Route path="/pengaturan/backup" element={<Backup />} />
+          {/* Operasional Siswa - Keberangkatan */}
+          <Route path="/operasional/keberangkatan/jadwal" element={<JadwalKeberangkatan />} />
+          <Route path="/operasional/keberangkatan/checklist" element={<ChecklistPraBerangkat />} />
+          <Route path="/operasional/keberangkatan/penerbangan" element={<DetailPenerbangan />} />
+          <Route path="/operasional/keberangkatan/dokumen-final" element={<DokumenFinal />} />
+          <Route path="/operasional/keberangkatan/status" element={<StatusKeberangkatan />} />
+          <Route path="/operasional/keberangkatan/konfirmasi" element={<KonfirmasiBerangkat />} />
 
-          {/* 404 - Redirect to Dashboard */}
+          {/* Recruitment & Matching Jepang */}
+          <Route path="/recruitment/pool" element={<PoolKandidat />} />
+          <Route path="/recruitment/interview-jadwal" element={<JadwalInterview />} />
+          <Route path="/recruitment/interview-hasil" element={<HasilInterview />} />
+          <Route path="/recruitment/approval" element={<ApprovalKandidat />} />
+          <Route path="/recruitment/placement" element={<PlacementJepang />} />
+          <Route path="/recruitment/status" element={<StatusPlacement />} />
+
+          {/* Dokumen & Legal */}
+          <Route path="/dokumen/legal" element={<DokumenLegal />} />
+          <Route path="/dokumen/approval" element={<ApprovalDokumen />} />
+          <Route path="/dokumen/kontrak-siswa" element={<KontrakSiswa />} />
+          <Route path="/dokumen/kontrak-perusahaan" element={<KontrakPerusahaan />} />
+          <Route path="/dokumen/histori" element={<VersiHistori />} />
+          <Route path="/dokumen/reminder" element={<ReminderExpired />} />
+
+          {/* Monitoring Jepang */}
+          <Route path="/monitoring/status-kerja" element={<StatusKerjaSiswa />} />
+          <Route path="/monitoring/checkin" element={<CheckinBerkala />} />
+          <Route path="/monitoring/evaluasi-perusahaan" element={<EvaluasiPerusahaan />} />
+          <Route path="/monitoring/incident" element={<IncidentReport />} />
+          <Route path="/monitoring/kepulangan" element={<DataKepulangan />} />
+
+          {/* Budgeting & Control */}
+          <Route path="/budgeting/period" element={<BudgetPeriod />} />
+          <Route path="/budgeting/planning" element={<BudgetPlanning />} />
+          <Route path="/budgeting/allocation" element={<BudgetAllocation />} />
+          <Route path="/budgeting/approval" element={<BudgetApproval />} />
+          <Route path="/budgeting/revision" element={<BudgetRevision />} />
+          <Route path="/budgeting/monitoring" element={<BudgetMonitoring />} />
+          <Route path="/budgeting/lock" element={<BudgetLock />} />
+
+          {/* Finance (Cashflow) */}
+          <Route path="/finance/billing" element={<BillingInvoice />} />
+          <Route path="/finance/virtual-account" element={<VirtualAccount />} />
+          <Route path="/finance/payment" element={<PaymentMonitoring />} />
+          <Route path="/finance/disbursement-request" element={<RequestDisbursement />} />
+          <Route path="/finance/disbursement-approval" element={<ApprovalDisbursement />} />
+          <Route path="/finance/cash-in" element={<CashIn />} />
+          <Route path="/finance/cash-out" element={<CashOut />} />
+
+          {/* Accounting */}
+          <Route path="/accounting/auto-journal" element={<AutoJournal />} />
+          <Route path="/accounting/manual-journal" element={<ManualJournal />} />
+          <Route path="/accounting/journal-approval" element={<JournalApproval />} />
+          <Route path="/accounting/ledger" element={<GeneralLedger />} />
+          <Route path="/accounting/trial-balance" element={<TrialBalance />} />
+          <Route path="/accounting/profit-loss" element={<ProfitLoss />} />
+          <Route path="/accounting/balance-sheet" element={<BalanceSheet />} />
+
+          {/* Reporting & Analytics */}
+          <Route path="/reporting/operasional" element={<ReportOperasional />} />
+          <Route path="/reporting/akademik" element={<ReportAkademik />} />
+          <Route path="/reporting/placement" element={<ReportPlacement />} />
+          <Route path="/reporting/budget" element={<ReportBudget />} />
+          <Route path="/reporting/cashflow" element={<ReportCashflow />} />
+          <Route path="/reporting/keuangan" element={<ReportKeuangan />} />
+          <Route path="/reporting/export" element={<ExportData />} />
+
+          {/* Integration & Settings */}
+          <Route path="/settings/payment-gateway" element={<PaymentGateway />} />
+          <Route path="/settings/email-gateway" element={<EmailGateway />} />
+          <Route path="/settings/telegram-gateway" element={<TelegramGateway />} />
+          <Route path="/settings/template" element={<TemplateDokumen />} />
+          <Route path="/settings/sla" element={<SLAReminder />} />
+          <Route path="/settings/backup" element={<BackupRestore />} />
+          <Route path="/settings/compliance" element={<CompliancePolicy />} />
+
+          {/* 404 */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
