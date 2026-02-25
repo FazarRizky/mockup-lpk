@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 const exportTemplates = [
   {
@@ -48,10 +48,10 @@ const exportTemplates = [
 ];
 
 const recentExports = [
-  { nama: 'Database Kandidat Siap Salur', format: 'Excel', tanggal: '2025-02-14 14:22', oleh: 'Admin Penyaluran', ukuran: '245 KB' },
-  { nama: 'Laporan Keuangan Bulanan - Jan 2025', format: 'PDF', tanggal: '2025-02-12 09:05', oleh: 'Direktur Keuangan', ukuran: '1.2 MB' },
-  { nama: 'Data Nilai Seluruh Siswa - Batch Jan', format: 'Excel', tanggal: '2025-02-10 16:44', oleh: 'Admin Akademik', ukuran: '180 KB' },
-  { nama: 'Kontrak Siswa Massal - 8 Siswa', format: 'PDF', tanggal: '2025-02-08 11:30', oleh: 'Admin Penyaluran', ukuran: '8.4 MB' },
+  { id: 1, nama: 'Database Kandidat Siap Salur', format: 'Excel', tanggal: '2025-02-14 14:22', oleh: 'Admin Penyaluran', ukuran: '245 KB' },
+  { id: 2, nama: 'Laporan Keuangan Bulanan - Jan 2025', format: 'PDF', tanggal: '2025-02-12 09:05', oleh: 'Direktur Keuangan', ukuran: '1.2 MB' },
+  { id: 3, nama: 'Data Nilai Seluruh Siswa - Batch Jan', format: 'Excel', tanggal: '2025-02-10 16:44', oleh: 'Admin Akademik', ukuran: '180 KB' },
+  { id: 4, nama: 'Kontrak Siswa Massal - 8 Siswa', format: 'PDF', tanggal: '2025-02-08 11:30', oleh: 'Admin Penyaluran', ukuran: '8.4 MB' },
 ];
 
 export default function ExportData() {
@@ -61,77 +61,145 @@ export default function ExportData() {
   const [selectedPeriod, setSelectedPeriod] = useState('Feb 2025');
 
   const handleExport = (id, format) => {
-    setLoadingId(`${id}-${format}`);
+    const key = `${id}-${format}`;
+    setLoadingId(key);
+
     setTimeout(() => {
       setLoadingId(null);
-      setDoneId(`${id}-${format}`);
+      setDoneId(key);
       setTimeout(() => setDoneId(null), 3000);
     }, 1500);
   };
 
+  const filteredTemplates = useMemo(() => {
+    if (filterFormat === 'Semua') return exportTemplates;
+
+    return exportTemplates.map(group => ({
+      ...group,
+      items: group.items.filter(item =>
+        item.format.includes(filterFormat)
+      )
+    })).filter(group => group.items.length > 0);
+  }, [filterFormat]);
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+
+      {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Export PDF / Excel</h1>
-          <p className="text-sm text-gray-500 mt-1">Unduh laporan dan data dalam berbagai format</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Unduh laporan dan data dalam berbagai format
+          </p>
         </div>
-        <select className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white" value={selectedPeriod} onChange={e => setSelectedPeriod(e.target.value)}>
-          {['Feb 2025', 'Jan 2025', 'Des 2024', 'Nov 2024', 'Custom...'].map(p => <option key={p}>{p}</option>)}
-        </select>
+
+        <div className="flex gap-3">
+          <select
+            className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white"
+            value={filterFormat}
+            onChange={(e) => setFilterFormat(e.target.value)}
+          >
+            {['Semua', 'Excel', 'PDF'].map(f => (
+              <option key={f}>{f}</option>
+            ))}
+          </select>
+
+          <select
+            className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white"
+            value={selectedPeriod}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+          >
+            {['Feb 2025', 'Jan 2025', 'Des 2024', 'Nov 2024', 'Custom...'].map(p => (
+              <option key={p}>{p}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Recent Exports */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 mb-6">
-        <p className="text-sm font-semibold text-gray-700 mb-3">📋 Export Terakhir</p>
+        <p className="text-sm font-semibold text-gray-700 mb-3">
+          📋 Export Terakhir
+        </p>
+
         <div className="space-y-2">
-          {recentExports.map((r, i) => (
-            <div key={i} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+          {recentExports.map((r) => (
+            <div key={r.id} className="flex items-center justify-between py-2 border-b last:border-0">
               <div className="flex items-center gap-3">
-                <span className="text-lg">{r.format === 'Excel' ? '📊' : '📄'}</span>
+                <span className="text-lg">
+                  {r.format === 'Excel' ? '📊' : '📄'}
+                </span>
                 <div>
                   <p className="text-sm font-medium text-gray-800">{r.nama}</p>
-                  <p className="text-xs text-gray-400">{r.tanggal} · {r.oleh} · {r.ukuran}</p>
+                  <p className="text-xs text-gray-400">
+                    {r.tanggal} · {r.oleh} · {r.ukuran}
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className={`text-xs px-2 py-0.5 rounded font-medium ${r.format === 'Excel' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{r.format}</span>
-                <button className="text-xs text-blue-500 hover:underline">⬇️ Unduh</button>
-              </div>
+
+              <span className={`text-xs px-2 py-0.5 rounded font-medium ${
+                r.format === 'Excel'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-100 text-red-700'
+              }`}>
+                {r.format}
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Export Templates */}
+      {/* Templates */}
       <div className="space-y-5">
-        {exportTemplates.map((group, gi) => (
-          <div key={gi} className={`rounded-xl border p-5 ${group.color}`}>
+        {filteredTemplates.map((group) => (
+          <div key={group.kategori} className={`rounded-xl border p-5 ${group.color}`}>
             <div className="flex items-center gap-2 mb-4">
               <span className="text-2xl">{group.icon}</span>
               <h3 className="font-bold text-gray-800">{group.kategori}</h3>
             </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {group.items.map((item) => (
                 <div key={item.id} className="bg-white rounded-xl border border-gray-200 p-4">
-                  <p className="font-semibold text-gray-800 text-sm mb-1">{item.nama}</p>
-                  <p className="text-xs text-gray-500 mb-3">{item.deskripsi}</p>
+                  <p className="font-semibold text-gray-800 text-sm mb-1">
+                    {item.nama}
+                  </p>
+                  <p className="text-xs text-gray-500 mb-3">
+                    {item.deskripsi}
+                  </p>
+
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-400">⏱️ {item.estimasi}</span>
+                    <span className="text-xs text-gray-400">
+                      ⏱️ {item.estimasi}
+                    </span>
+
                     <div className="flex gap-2">
-                      {item.format.map(fmt => {
+                      {item.format.map((fmt) => {
                         const key = `${item.id}-${fmt}`;
                         const isLoading = loadingId === key;
                         const isDone = doneId === key;
+
                         return (
                           <button
                             key={fmt}
                             onClick={() => handleExport(item.id, fmt)}
                             disabled={isLoading}
-                            className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${isDone ? 'bg-emerald-500 text-white' : isLoading ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : fmt === 'Excel' ? 'bg-emerald-500 hover:bg-emerald-600 text-white' : 'bg-red-500 hover:bg-red-600 text-white'}`}
+                            className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-all ${
+                              isDone
+                                ? 'bg-emerald-500 text-white'
+                                : isLoading
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : fmt === 'Excel'
+                                ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                                : 'bg-red-500 hover:bg-red-600 text-white'
+                            }`}
                           >
-                            {isLoading ? '⏳' : isDone ? '✅' : fmt === 'Excel' ? '📊' : '📄'}
-                            {isLoading ? 'Proses...' : isDone ? 'Berhasil!' : fmt}
+                            {isLoading
+                              ? '⏳ Proses...'
+                              : isDone
+                              ? '✅ Berhasil!'
+                              : fmt}
                           </button>
                         );
                       })}
@@ -143,6 +211,7 @@ export default function ExportData() {
           </div>
         ))}
       </div>
+
     </div>
   );
 }
