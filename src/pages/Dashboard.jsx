@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Users, BookOpen, Award, Briefcase, TrendingUp, ArrowUp, ArrowDown,
+  Users, Briefcase, ArrowUp, ArrowDown,
   AlertTriangle, Clock, CheckCircle, DollarSign, Plane, Bell
 } from 'lucide-react';
 import {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard, Shield, Database, Users, Plane, Briefcase,
+  LayoutDashboard, Shield, Database, Briefcase,
   FileText, Activity, PieChart, DollarSign, BookOpen, BarChart2,
   Settings, ChevronRight, ChevronLeft, GraduationCap
 } from 'lucide-react';
