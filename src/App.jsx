@@ -4,6 +4,16 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import MainLayout from './components/layout/MainLayout';
 
+// Multi-role
+import { KandidatProvider } from './context/KandidatContext';
+import RoleSwitcher from './roles/RoleSwitcher';
+import RoleLanding from './roles/RoleLanding';
+import SiswaLayout from './roles/siswa/SiswaLayout';
+import FormPendaftaran from './roles/siswa/FormPendaftaran';
+import SuccessPage from './roles/siswa/SuccessPage';
+import SalesLayout from './roles/sales/SalesLayout';
+import DaftarSiswa from './roles/sales/DaftarSiswa';
+
 // Pages
 import Dashboard from './pages/Dashboard';
 
@@ -123,148 +133,168 @@ import CompliancePolicy from './pages/settings/CompliancePolicy';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#1f2937',
-            borderRadius: '12px',
-            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-            padding: '16px',
-          },
-          success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
-          error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
-        }}
-      />
+    <KandidatProvider>
+      <BrowserRouter>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#fff',
+              color: '#1f2937',
+              borderRadius: '12px',
+              boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+              padding: '16px',
+            },
+            success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
+            error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
+          }}
+        />
 
-      <Routes>
-        <Route element={<MainLayout />}>
-          {/* Dashboard */}
-          <Route path="/" element={<Dashboard />} />
+        <Routes>
+          {/* Landing — pilih role */}
+          <Route path="/" element={<RoleLanding />} />
 
-          {/* System & Security */}
-          <Route path="/system/user" element={<UserManagement />} />
-          <Route path="/system/role" element={<RoleManagement />} />
-          <Route path="/system/permission" element={<PermissionManagement />} />
-          <Route path="/system/approval-matrix" element={<ApprovalMatrix />} />
-          <Route path="/system/access-control" element={<AccessControl />} />
-          <Route path="/system/activity-log" element={<ActivityLog />} />
+          {/* Role Siswa (publik) */}
+          <Route path="/siswa" element={<SiswaLayout />}>
+            <Route index element={<FormPendaftaran />} />
+            <Route path="sukses" element={<SuccessPage />} />
+          </Route>
 
-          {/* Master Data */}
-          <Route path="/master/cabang" element={<Cabang />} />
-          <Route path="/master/cost-center" element={<CostCenter />} />
-          <Route path="/master/coa" element={<ChartOfAccounts />} />
-          <Route path="/master/fiscal-period" element={<FiscalPeriod />} />
-          <Route path="/master/program" element={<Program />} />
-          <Route path="/master/batch" element={<BatchAngkatan />} />
-          <Route path="/master/instruktur" element={<Instruktur />} />
-          <Route path="/master/skill" element={<SkillSertifikasi />} />
-          <Route path="/master/partner" element={<PartnerJepang />} />
-          <Route path="/master/perusahaan" element={<PerusahaanJepang />} />
-          <Route path="/master/lokasi" element={<LokasiJepang />} />
-          <Route path="/master/jenis-dokumen" element={<JenisDokumen />} />
-          <Route path="/master/paket-biaya" element={<PaketBiaya />} />
+          {/* Role Sales */}
+          <Route path="/sales" element={<SalesLayout />}>
+            <Route index element={<DaftarSiswa />} />
+            <Route path="tertarik" element={<DaftarSiswa tertarikOnly />} />
+          </Route>
 
-          {/* Operasional Siswa - Manajemen Siswa */}
-          <Route path="/operasional/siswa/profil" element={<ProfilSiswa />} />
-          <Route path="/operasional/siswa/journey" element={<StatusJourney />} />
-          <Route path="/operasional/siswa/dokumen" element={<DokumenSiswa />} />
-          <Route path="/operasional/siswa/catatan" element={<CatatanIssue />} />
+          {/* Role Admin (existing dashboard, di-prefix /admin) */}
+          <Route path="/admin" element={<MainLayout />}>
+            {/* Dashboard */}
+            <Route index element={<Dashboard />} />
 
-          {/* Operasional Siswa - Training Progress */}
-          <Route path="/operasional/training/absensi" element={<Absensi />} />
-          <Route path="/operasional/training/penilaian" element={<Penilaian />} />
-          <Route path="/operasional/training/evaluasi" element={<Evaluasi />} />
+            {/* System & Security */}
+            <Route path="system/user" element={<UserManagement />} />
+            <Route path="system/role" element={<RoleManagement />} />
+            <Route path="system/permission" element={<PermissionManagement />} />
+            <Route path="system/approval-matrix" element={<ApprovalMatrix />} />
+            <Route path="system/access-control" element={<AccessControl />} />
+            <Route path="system/activity-log" element={<ActivityLog />} />
 
-          {/* Operasional Siswa - Keberangkatan */}
-          <Route path="/operasional/keberangkatan/jadwal" element={<JadwalKeberangkatan />} />
-          <Route path="/operasional/keberangkatan/checklist" element={<ChecklistPraBerangkat />} />
-          <Route path="/operasional/keberangkatan/penerbangan" element={<DetailPenerbangan />} />
-          <Route path="/operasional/keberangkatan/dokumen-final" element={<DokumenFinal />} />
-          <Route path="/operasional/keberangkatan/status" element={<StatusKeberangkatan />} />
-          <Route path="/operasional/keberangkatan/konfirmasi" element={<KonfirmasiBerangkat />} />
+            {/* Master Data */}
+            <Route path="master/cabang" element={<Cabang />} />
+            <Route path="master/cost-center" element={<CostCenter />} />
+            <Route path="master/coa" element={<ChartOfAccounts />} />
+            <Route path="master/fiscal-period" element={<FiscalPeriod />} />
+            <Route path="master/program" element={<Program />} />
+            <Route path="master/batch" element={<BatchAngkatan />} />
+            <Route path="master/instruktur" element={<Instruktur />} />
+            <Route path="master/skill" element={<SkillSertifikasi />} />
+            <Route path="master/partner" element={<PartnerJepang />} />
+            <Route path="master/perusahaan" element={<PerusahaanJepang />} />
+            <Route path="master/lokasi" element={<LokasiJepang />} />
+            <Route path="master/jenis-dokumen" element={<JenisDokumen />} />
+            <Route path="master/paket-biaya" element={<PaketBiaya />} />
 
-          {/* Recruitment & Matching Jepang */}
-          <Route path="/recruitment/pool" element={<PoolKandidat />} />
-          <Route path="/recruitment/interview-jadwal" element={<JadwalInterview />} />
-          <Route path="/recruitment/interview-hasil" element={<HasilInterview />} />
-          <Route path="/recruitment/approval" element={<ApprovalKandidat />} />
-          <Route path="/recruitment/placement" element={<PlacementJepang />} />
-          <Route path="/recruitment/status" element={<StatusPlacement />} />
+            {/* Operasional Siswa - Manajemen Siswa */}
+            <Route path="operasional/siswa/profil" element={<ProfilSiswa />} />
+            <Route path="operasional/siswa/journey" element={<StatusJourney />} />
+            <Route path="operasional/siswa/dokumen" element={<DokumenSiswa />} />
+            <Route path="operasional/siswa/catatan" element={<CatatanIssue />} />
 
-          {/* Dokumen & Legal */}
-          <Route path="/dokumen/legal" element={<DokumenLegal />} />
-          <Route path="/dokumen/approval" element={<ApprovalDokumen />} />
-          <Route path="/dokumen/kontrak-siswa" element={<KontrakSiswa />} />
-          <Route path="/dokumen/kontrak-perusahaan" element={<KontrakPerusahaan />} />
-          <Route path="/dokumen/histori" element={<VersiHistori />} />
-          <Route path="/dokumen/reminder" element={<ReminderExpired />} />
+            {/* Operasional Siswa - Training Progress */}
+            <Route path="operasional/training/absensi" element={<Absensi />} />
+            <Route path="operasional/training/penilaian" element={<Penilaian />} />
+            <Route path="operasional/training/evaluasi" element={<Evaluasi />} />
 
-         {/* Monitoring Jepang */}
-          <Route path="/monitoring/status-kerja" element={<StatusKerjaSiswa />} />
-          <Route path="/monitoring/checkin" element={<CheckinBerkala />} />
-          <Route path="/monitoring/evaluasi-perusahaan" element={<EvaluasiPerusahaan />} />
-          <Route path="/monitoring/evaluasi-kinerja" element={<EvaluasiKinerja />} />
-          <Route path="/monitoring/incident" element={<IncidentReport />} />
-          <Route path="/monitoring/laporan-masalah" element={<LaporanMasalah />} />
-          <Route path="/monitoring/penempatan" element={<DataPenempatan />} />
-          <Route path="/monitoring/perpanjangan-kontrak" element={<PerpanjanganKontrak />} />
-          <Route path="/monitoring/kepulangan" element={<DataKepulangan />} />
-                    
+            {/* Operasional Siswa - Keberangkatan */}
+            <Route path="operasional/keberangkatan/jadwal" element={<JadwalKeberangkatan />} />
+            <Route path="operasional/keberangkatan/checklist" element={<ChecklistPraBerangkat />} />
+            <Route path="operasional/keberangkatan/penerbangan" element={<DetailPenerbangan />} />
+            <Route path="operasional/keberangkatan/dokumen-final" element={<DokumenFinal />} />
+            <Route path="operasional/keberangkatan/status" element={<StatusKeberangkatan />} />
+            <Route path="operasional/keberangkatan/konfirmasi" element={<KonfirmasiBerangkat />} />
 
-          {/* Budgeting & Control */}
-          <Route path="/budgeting/period" element={<BudgetPeriod />} />
-          <Route path="/budgeting/planning" element={<BudgetPlanning />} />
-          <Route path="/budgeting/allocation" element={<BudgetAllocation />} />
-          <Route path="/budgeting/approval" element={<BudgetApproval />} />
-          <Route path="/budgeting/revision" element={<BudgetRevision />} />
-          <Route path="/budgeting/monitoring" element={<BudgetMonitoring />} />
-          <Route path="/budgeting/lock" element={<BudgetLock />} />
+            {/* Recruitment & Matching Jepang */}
+            <Route path="recruitment/pool" element={<PoolKandidat />} />
+            <Route path="recruitment/interview-jadwal" element={<JadwalInterview />} />
+            <Route path="recruitment/interview-hasil" element={<HasilInterview />} />
+            <Route path="recruitment/approval" element={<ApprovalKandidat />} />
+            <Route path="recruitment/placement" element={<PlacementJepang />} />
+            <Route path="recruitment/status" element={<StatusPlacement />} />
 
-          {/* Finance (Cashflow) */}
-          <Route path="/finance/billing" element={<BillingInvoice />} />
-          <Route path="/finance/virtual-account" element={<VirtualAccount />} />
-          <Route path="/finance/payment" element={<PaymentMonitoring />} />
-          <Route path="/finance/disbursement-request" element={<RequestDisbursement />} />
-          <Route path="/finance/disbursement-approval" element={<ApprovalDisbursement />} />
-          <Route path="/finance/cash-in" element={<CashIn />} />
-          <Route path="/finance/cash-out" element={<CashOut />} />
+            {/* Dokumen & Legal */}
+            <Route path="dokumen/legal" element={<DokumenLegal />} />
+            <Route path="dokumen/approval" element={<ApprovalDokumen />} />
+            <Route path="dokumen/kontrak-siswa" element={<KontrakSiswa />} />
+            <Route path="dokumen/kontrak-perusahaan" element={<KontrakPerusahaan />} />
+            <Route path="dokumen/histori" element={<VersiHistori />} />
+            <Route path="dokumen/reminder" element={<ReminderExpired />} />
 
-          {/* Accounting */}
-          <Route path="/accounting/auto-journal" element={<AutoJournal />} />
-          <Route path="/accounting/manual-journal" element={<ManualJournal />} />
-          <Route path="/accounting/journal-approval" element={<JournalApproval />} />
-          <Route path="/accounting/ledger" element={<GeneralLedger />} />
-          <Route path="/accounting/trial-balance" element={<TrialBalance />} />
-          <Route path="/accounting/profit-loss" element={<ProfitLoss />} />
-          <Route path="/accounting/balance-sheet" element={<BalanceSheet />} />
+            {/* Monitoring Jepang */}
+            <Route path="monitoring/status-kerja" element={<StatusKerjaSiswa />} />
+            <Route path="monitoring/checkin" element={<CheckinBerkala />} />
+            <Route path="monitoring/evaluasi-perusahaan" element={<EvaluasiPerusahaan />} />
+            <Route path="monitoring/evaluasi-kinerja" element={<EvaluasiKinerja />} />
+            <Route path="monitoring/incident" element={<IncidentReport />} />
+            <Route path="monitoring/laporan-masalah" element={<LaporanMasalah />} />
+            <Route path="monitoring/penempatan" element={<DataPenempatan />} />
+            <Route path="monitoring/perpanjangan-kontrak" element={<PerpanjanganKontrak />} />
+            <Route path="monitoring/kepulangan" element={<DataKepulangan />} />
 
-          {/* Reporting & Analytics */}
-          <Route path="/reporting/operasional" element={<ReportOperasional />} />
-          <Route path="/reporting/akademik" element={<ReportAkademik />} />
-          <Route path="/reporting/placement" element={<ReportPlacement />} />
-          <Route path="/reporting/budget" element={<ReportBudget />} />
-          <Route path="/reporting/cashflow" element={<ReportCashflow />} />
-          <Route path="/reporting/keuangan" element={<ReportKeuangan />} />
-          <Route path="/reporting/export" element={<ExportData />} />
+            {/* Budgeting & Control */}
+            <Route path="budgeting/period" element={<BudgetPeriod />} />
+            <Route path="budgeting/planning" element={<BudgetPlanning />} />
+            <Route path="budgeting/allocation" element={<BudgetAllocation />} />
+            <Route path="budgeting/approval" element={<BudgetApproval />} />
+            <Route path="budgeting/revision" element={<BudgetRevision />} />
+            <Route path="budgeting/monitoring" element={<BudgetMonitoring />} />
+            <Route path="budgeting/lock" element={<BudgetLock />} />
 
-          {/* Integration & Settings */}
-          <Route path="/settings/payment-gateway" element={<PaymentGateway />} />
-          <Route path="/settings/email-gateway" element={<EmailGateway />} />
-          <Route path="/settings/telegram-gateway" element={<TelegramGateway />} />
-          <Route path="/settings/template" element={<TemplateDokumen />} />
-          <Route path="/settings/sla" element={<SLAReminder />} />
-          <Route path="/settings/backup" element={<BackupRestore />} />
-          <Route path="/settings/compliance" element={<CompliancePolicy />} />
+            {/* Finance (Cashflow) */}
+            <Route path="finance/billing" element={<BillingInvoice />} />
+            <Route path="finance/virtual-account" element={<VirtualAccount />} />
+            <Route path="finance/payment" element={<PaymentMonitoring />} />
+            <Route path="finance/disbursement-request" element={<RequestDisbursement />} />
+            <Route path="finance/disbursement-approval" element={<ApprovalDisbursement />} />
+            <Route path="finance/cash-in" element={<CashIn />} />
+            <Route path="finance/cash-out" element={<CashOut />} />
 
-          {/* 404 */}
+            {/* Accounting */}
+            <Route path="accounting/auto-journal" element={<AutoJournal />} />
+            <Route path="accounting/manual-journal" element={<ManualJournal />} />
+            <Route path="accounting/journal-approval" element={<JournalApproval />} />
+            <Route path="accounting/ledger" element={<GeneralLedger />} />
+            <Route path="accounting/trial-balance" element={<TrialBalance />} />
+            <Route path="accounting/profit-loss" element={<ProfitLoss />} />
+            <Route path="accounting/balance-sheet" element={<BalanceSheet />} />
+
+            {/* Reporting & Analytics */}
+            <Route path="reporting/operasional" element={<ReportOperasional />} />
+            <Route path="reporting/akademik" element={<ReportAkademik />} />
+            <Route path="reporting/placement" element={<ReportPlacement />} />
+            <Route path="reporting/budget" element={<ReportBudget />} />
+            <Route path="reporting/cashflow" element={<ReportCashflow />} />
+            <Route path="reporting/keuangan" element={<ReportKeuangan />} />
+            <Route path="reporting/export" element={<ExportData />} />
+
+            {/* Integration & Settings */}
+            <Route path="settings/payment-gateway" element={<PaymentGateway />} />
+            <Route path="settings/email-gateway" element={<EmailGateway />} />
+            <Route path="settings/telegram-gateway" element={<TelegramGateway />} />
+            <Route path="settings/template" element={<TemplateDokumen />} />
+            <Route path="settings/sla" element={<SLAReminder />} />
+            <Route path="settings/backup" element={<BackupRestore />} />
+            <Route path="settings/compliance" element={<CompliancePolicy />} />
+          </Route>
+
+          {/* 404 → balik ke landing */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+
+        {/* Floating role switcher (semua role) */}
+        <RoleSwitcher />
+      </BrowserRouter>
+    </KandidatProvider>
   );
 }
 
